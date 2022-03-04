@@ -1,0 +1,42 @@
+------Clone source--------
+1. sudo yum install git
+2. git clone --recursive https://github.com/ceph/ceph.git
+3. cd ceph
+4. git submodule update --force --init --recursive
+5. move src/dmclock folder (mv src/dmclock ../)
+6. git checkout mimic (from ceph folder)
+
+------Build Ceph----------
+1. yum install centos-release-scl
+2. sudo yum install devtoolset-7
+3. scl enable devtoolset-7 bash
+4. yum --enablerepo=extras install epel-release
+4. yum install python-pip
+5. pip install --upgrade virtualenv/pip install --user --upgrade virtualenv
+6. changes in /etc/yum.repos.d/Centos-SCLo-scl-rh.repo, modify url ..../rh to ..../sclo (do if necessary, incase 
+   ..../rh is invalid url)
+7. ./install-deps.sh (in ceph folder)
+8. ./do_cmake.sh (in ceph folder)
+9. cd build
+10. make -j3
+
+------Install Ceph--------
+1. [ceph@osd1 mon]$ cd ~
+   [ceph@osd1 ~]$ vim .bashrc
+    paste(# User specific aliases and functions
+            PYTHONPATH="${PYTHONPATH}:/usr/local/lib/python2.7/site-packages/"
+            export PYTHONPATH
+          ) 
+2. [ceph@osd1 ~]$ su
+    Password: 
+   [root@osd1 ceph]# vim .bashrc 
+    paste(# User specific aliases and functions
+            PYTHONPATH="${PYTHONPATH}:/usr/local/lib/python2.7/site-packages/"
+            export PYTHONPATH
+          )
+3. go to build folder (cd new_ceph/ceph/build)
+   [ceph@osd1 build]$ su
+    Password: 
+    #make install
+4. #yum install python-ceph
+5. check successfull installation by executing command (ceph -v)
